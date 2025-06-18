@@ -1,0 +1,6 @@
+server:
+  port: ${SERVER_INTERNAL_PORT}
+
+spring:
+  application:
+    name: server-ports-manager
