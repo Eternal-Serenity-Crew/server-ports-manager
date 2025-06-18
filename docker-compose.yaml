@@ -1,0 +1,19 @@
+name: "esc-utilities"
+services:
+  postgres:
+    container_name: "server-ports-manager-postgres"
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - esc-ports-manager-net
+
+networks:
+  esc-ports-manager-net:
+    driver: bridge
