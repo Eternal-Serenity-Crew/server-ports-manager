@@ -4,3 +4,9 @@ server:
 spring:
   application:
     name: server-ports-manager
+
+database:
+  url: ${DB_URL}
+  username: ${DB_USER}
+  password: ${DB_PASSWORD}
+  schema: public
