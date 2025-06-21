@@ -10,7 +10,7 @@ import org.esc.serverportsmanager.entities.enums.Roles
 
 @Entity
 @Table(name = "users")
-data class UsersModel(
+data class Users(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,

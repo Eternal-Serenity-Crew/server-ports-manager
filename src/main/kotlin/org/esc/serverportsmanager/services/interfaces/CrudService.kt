@@ -1,6 +1,6 @@
 package org.esc.serverportsmanager.services.interfaces
 
-import org.esc.serverportsmanager.services.dto.DtoClass
+import org.esc.serverportsmanager.dto.DtoClass
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface CrudService<T, ID> {
