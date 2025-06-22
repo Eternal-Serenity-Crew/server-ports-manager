@@ -13,3 +13,9 @@ database:
   username: ${DB_USER}
   password: ${DB_PASSWORD}
   schema: public
+
+config:
+  jwt:
+    secret: ${JWT_SECRET}
+    access_token_expiration: ${JWT_ACCESS_EXPIRATION_TIME}
+    refresh_token_expiration: ${JWT_REFRESH_EXPIRATION_TIME}
