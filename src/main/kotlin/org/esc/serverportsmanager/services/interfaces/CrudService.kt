@@ -1,20 +1,29 @@
 package org.esc.serverportsmanager.services.interfaces
 
-import org.esc.serverportsmanager.dto.DtoClass
-import org.springframework.data.jpa.repository.JpaRepository
+import org.esc.serverportsmanager.exceptions.NotFoundException
+import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionSynchronizationManager
 
-interface CrudService<T, ID> {
-    val repository: JpaRepository<T, ID>
-
+interface CrudService<T, ID, CrDTO, UpDTO> : BasicApiService<T, ID> {
     fun getAll(): List<T> = repository.findAll()
-    fun getAllByIds(ids: List<ID>): List<T> = repository.findAllById(ids)
-    fun getById(id: ID): T? = id?.let { repository.findById(it) }?.get()
+    fun getById(id: ID, throwable: Boolean = true, message: String = "Object with id $id not found."): T? {
+        val o = id!!.let { repository.findById(it) }
 
-    fun <D: DtoClass> create(item: D)
-    fun <D: DtoClass> createAll(items: List<D>)
+        if (throwable && !o.isPresent) {
+            throw NotFoundException(message)
+        }
+        return if (!o.isPresent) null else o.get()
+    }
 
-    fun <D: DtoClass> update(item: D)
+    fun create(item: CrDTO): Any
+    fun createAll(items: List<CrDTO>): Any
 
-    fun deleteById(id: ID) = id?.let { repository.deleteById(it) }
-    fun deleteAll() = repository.deleteAll()
+    fun update(item: UpDTO): Any
+
+    @Transactional
+    fun deleteById(id: ID): Any? = id?.let {
+//        repository.deleteById(it)
+        println(TransactionSynchronizationManager.isActualTransactionActive())
+    }
+    fun deleteAll(): Any? = repository.deleteAll()
 }
