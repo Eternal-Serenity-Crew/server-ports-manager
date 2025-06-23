@@ -2,7 +2,6 @@ package org.esc.serverportsmanager.services.interfaces
 
 import org.esc.serverportsmanager.exceptions.NotFoundException
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.transaction.support.TransactionSynchronizationManager
 
 interface CrudService<T, ID, CrDTO, UpDTO> : BasicApiService<T, ID> {
     fun getAll(): List<T> = repository.findAll()
@@ -15,15 +14,18 @@ interface CrudService<T, ID, CrDTO, UpDTO> : BasicApiService<T, ID> {
         return if (!o.isPresent) null else o.get()
     }
 
+    @Transactional
     fun create(item: CrDTO): Any
+
+    @Transactional
     fun createAll(items: List<CrDTO>): Any
 
+    @Transactional
     fun update(item: UpDTO): Any
 
     @Transactional
-    fun deleteById(id: ID): Any? = id?.let {
-//        repository.deleteById(it)
-        println(TransactionSynchronizationManager.isActualTransactionActive())
-    }
+    fun deleteById(id: ID): Any?
+
+    @Transactional
     fun deleteAll(): Any? = repository.deleteAll()
 }

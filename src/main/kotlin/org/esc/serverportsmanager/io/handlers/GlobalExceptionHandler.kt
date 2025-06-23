@@ -1,5 +1,6 @@
 package org.esc.serverportsmanager.io.handlers
 
+import org.esc.serverportsmanager.exceptions.DoubleRecordException
 import org.esc.serverportsmanager.exceptions.JwtAuthenticationException
 import org.esc.serverportsmanager.exceptions.NotFoundException
 import org.esc.serverportsmanager.io.BasicErrorResponse
@@ -28,6 +29,16 @@ class GlobalExceptionHandler {
         )
 
         return ResponseEntity(errorResponse, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler(DoubleRecordException::class)
+    fun handleDoubleRecordException(ex: DoubleRecordException): ResponseEntity<BasicErrorResponse> {
+        val errorResponse = BasicErrorResponse(
+            status = HttpStatus.CONFLICT.value(),
+            message = ex.message
+        )
+
+        return ResponseEntity(errorResponse, HttpStatus.CONFLICT)
     }
 
     @ExceptionHandler(JwtAuthenticationException::class)
