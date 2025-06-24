@@ -9,6 +9,10 @@ plugins {
     id("it.nicolasfarabegoli.conventional-commits") version "3.1.3"
 }
 
+val mockitoAgent by configurations.creating {
+    isTransitive = false
+}
+
 group = "org.esc"
 
 java {
@@ -69,6 +73,8 @@ dependencies {
     // Tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    mockitoAgent("org.mockito:mockito-core")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -86,6 +92,9 @@ allOpen {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    jvmArgs("-javaagent:${mockitoAgent.asPath}")
+    jvmArgs("-Xshare:off")
+
 }
 
 conventionalCommits {
