@@ -22,8 +22,8 @@ data class JwtTokensStorage(
     @JoinColumn(name = "user_id", nullable = false)
     val user: Users,
 
-    @Column(nullable = false, unique = true, name = "deviceUUID")
-    val deviceUUID: UUID,
+    @Column(nullable = false, unique = true)
+    val uuid: UUID,
 
     @Column(nullable = false)
     val token: String
