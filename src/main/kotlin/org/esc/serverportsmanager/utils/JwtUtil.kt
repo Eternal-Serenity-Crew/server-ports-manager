@@ -70,9 +70,9 @@ class JwtUtil(
         return BasicSuccessfulResponse("Token saved")
     }
 
-    fun verifyToken(token: String, uuid: UUID? = null): Boolean {
+    fun verifyToken(token: String, uuid: UUID? = null, throwTimeLimit: Boolean = true): Boolean {
         val claims = getClaims(token) ?: throw JwtAuthenticationException("Invalid token claims")
-        if (!claims.expiration.after(Date())) {
+        if (!claims.expiration.after(Date()) && throwTimeLimit) {
             throw JwtAuthenticationException("Token expired")
         }
 
