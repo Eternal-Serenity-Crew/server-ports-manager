@@ -64,8 +64,8 @@ class JwtUtil(
     }
 
     fun saveRefreshToken(data: CreateJwtToken, token: String): BasicSuccessfulResponse<String> {
-        val data = SaveRefreshTokenDto(data.user.id, data.uuid, token)
-        jwtTokensRepository.save(jwtTokensStorageMapper.tokenFromSaveRefreshDto(data))
+        val o = SaveRefreshTokenDto(data.user, data.uuid, token)
+        jwtTokensRepository.save(jwtTokensStorageMapper.tokenFromSaveRefreshDto(o))
 
         return BasicSuccessfulResponse("Token saved")
     }

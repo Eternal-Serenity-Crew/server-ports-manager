@@ -20,11 +20,11 @@ data class JwtTokensStorage(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    val user: Users,
+    var user: Users,
 
     @Column(nullable = false, unique = true)
-    val uuid: UUID,
+    var uuid: UUID,
 
     @Column(nullable = false)
-    val token: String
+    var token: String
 )
