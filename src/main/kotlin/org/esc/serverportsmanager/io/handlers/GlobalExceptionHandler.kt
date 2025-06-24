@@ -1,5 +1,6 @@
 package org.esc.serverportsmanager.io.handlers
 
+import io.jsonwebtoken.security.SignatureException
 import org.esc.serverportsmanager.exceptions.DoubleRecordException
 import org.esc.serverportsmanager.exceptions.JwtAuthenticationException
 import org.esc.serverportsmanager.exceptions.NotFoundException
@@ -47,6 +48,18 @@ class GlobalExceptionHandler {
             BasicErrorResponse(
                 status = HttpStatus.UNAUTHORIZED.value(),
                 message = it
+            )
+        }
+
+        return ResponseEntity(errorResponse, HttpStatus.UNAUTHORIZED)
+    }
+
+    @ExceptionHandler(SignatureException::class)
+    fun handleSignatureException(ex: SignatureException): ResponseEntity<BasicErrorResponse> {
+        val errorResponse = ex.message?.let {
+            BasicErrorResponse(
+                status = HttpStatus.LOCKED.value(),
+                message = "Jwt token verification failed. JWT validity cannot be asserted and should not be trusted."
             )
         }
 

@@ -71,22 +71,21 @@ class JwtUtil(
     }
 
     fun verifyToken(token: String, uuid: UUID? = null): Boolean {
-        try {
-            val claims = getClaims(token) ?: throw JwtAuthenticationException("Invalid token claims")
-            if (!claims.expiration.after(Date())) {
-                throw JwtAuthenticationException("Token expired")
-            }
-
-            if (uuid != null && (claims["uuid"] as UUID) != uuid) {
-                jwtTokensRepository.deleteByToken(token)
-                JwtAuthenticationException("Invalid token!")
-            }
-
-            return true
-        } catch (e: Exception) {
-            throw JwtAuthenticationException("Invalid token: ${e.message}")
+        val claims = getClaims(token) ?: throw JwtAuthenticationException("Invalid token claims")
+        if (!claims.expiration.after(Date())) {
+            throw JwtAuthenticationException("Token expired")
         }
+
+        if (uuid != null && (claims["uuid"].toString() != uuid.toString())) {
+            jwtTokensRepository.deleteByToken(token)
+            throw JwtAuthenticationException("Invalid token metadata! JWT validity cannot be asserted and should not be trusted.")
+        }
+
+        return true
     }
+
+    @Transactional
+    fun removeOldRefreshTokenByUUID(uuid: UUID) = jwtTokensRepository.removeByUuid(uuid)
 
     fun getUserFromToken(token: String): Users? {
         val claims = getClaims(token)
@@ -98,7 +97,7 @@ class JwtUtil(
     fun getRoleFromToken(token: String): Roles = getClaims(token)?.get("role") as Roles
 
     fun getClaims(token: String): Claims? {
-        val claims =  Jwts.parser()
+        val claims = Jwts.parser()
             .verifyWith(Keys.hmacShaKeyFor(jwtSecret.toByteArray()))
             .build()
             .parseSignedClaims(token)
