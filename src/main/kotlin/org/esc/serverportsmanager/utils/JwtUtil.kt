@@ -77,6 +77,10 @@ class JwtUtil(
         }
 
         if (uuid != null && (claims["uuid"].toString() != uuid.toString())) {
+            jwtTokensRepository.findByUuid(uuid).let {
+                if (it == null) throw JwtAuthenticationException("Invalid token metadata! JWT validity cannot be asserted and should not be trusted.")
+            }
+
             jwtTokensRepository.deleteByToken(token)
             throw JwtAuthenticationException("Invalid token metadata! JWT validity cannot be asserted and should not be trusted.")
         }
@@ -85,7 +89,7 @@ class JwtUtil(
     }
 
     @Transactional
-    fun removeOldRefreshTokenByUUID(uuid: UUID) = jwtTokensRepository.removeByUuid(uuid)
+    fun removeOldRefreshTokenByUUID(uuid: UUID) = jwtTokensRepository.deleteByUuid(uuid)
 
     fun getUserFromToken(token: String): Users? {
         val claims = getClaims(token)
