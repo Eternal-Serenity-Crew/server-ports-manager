@@ -7,10 +7,10 @@ import org.esc.serverportsmanager.exceptions.NotFoundException
 import org.esc.serverportsmanager.repositories.UsersRepository
 import org.esc.serverportsmanager.repositories.mappers.UsersMapper
 import org.esc.serverportsmanager.services.UsersService
-import org.esc.serverportsmanager.services.userService.UserData.TEST_EMAIL
-import org.esc.serverportsmanager.services.userService.UserData.TEST_USERNAME
-import org.esc.serverportsmanager.services.userService.UserData.USER_ID1
-import org.esc.serverportsmanager.services.userService.UserData.USER_ID2
+import org.esc.serverportsmanager.services.UserData.TEST_EMAIL
+import org.esc.serverportsmanager.services.UserData.TEST_USERNAME
+import org.esc.serverportsmanager.services.UserData.USER_ID1
+import org.esc.serverportsmanager.services.UserData.USER_ID2
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

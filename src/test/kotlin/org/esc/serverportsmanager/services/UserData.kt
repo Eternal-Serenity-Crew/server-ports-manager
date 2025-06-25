@@ -1,4 +1,4 @@
-package org.esc.serverportsmanager.services.userService
+package org.esc.serverportsmanager.services
 
 object UserData {
     const val USER_ID1 = 1L
