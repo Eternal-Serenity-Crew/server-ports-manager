@@ -7,6 +7,7 @@ import org.esc.serverportsmanager.exceptions.NotFoundException
 import org.esc.serverportsmanager.io.BasicErrorResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.authorization.AuthorizationDeniedException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
@@ -15,8 +16,8 @@ class GlobalExceptionHandler {
     @ExceptionHandler(Exception::class)
     fun handleAllExceptions(ex: Exception): ResponseEntity<BasicErrorResponse> {
         val errorResponse = BasicErrorResponse(
-            status = HttpStatus.INTERNAL_SERVER_ERROR.value(),
-            message = ex.message ?: "Unexpected error"
+            status = HttpStatus.NOT_FOUND.value(),
+            message = "${ex::class}; ${ex.message}",
         )
 
         return ResponseEntity(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR)
@@ -64,5 +65,17 @@ class GlobalExceptionHandler {
         }
 
         return ResponseEntity(errorResponse, HttpStatus.LOCKED)
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException::class)
+    fun handleAuthorizationDeniedException(ex: AuthorizationDeniedException): ResponseEntity<BasicErrorResponse> {
+        val errorResponse = ex.message?.let {
+            BasicErrorResponse(
+                status = HttpStatus.FORBIDDEN.value(),
+                message = "Access denied. You don't have permission to access this resource."
+            )
+        }
+
+        return ResponseEntity(errorResponse, HttpStatus.FORBIDDEN)
     }
 }
