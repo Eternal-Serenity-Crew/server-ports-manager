@@ -1,9 +1,5 @@
 package org.esc.serverportsmanager.dto
 
-import org.esc.serverportsmanager.io.BasicSuccessfulResponse
+import org.esc.serverportsmanager.io.converters.ConvertableToHttpResponse
 
-interface DtoClass
-
-fun <T : DtoClass> T.toHttpResponse(): BasicSuccessfulResponse<T> {
-    return BasicSuccessfulResponse(this)
-}
+interface DtoClass : ConvertableToHttpResponse<DtoClass>
