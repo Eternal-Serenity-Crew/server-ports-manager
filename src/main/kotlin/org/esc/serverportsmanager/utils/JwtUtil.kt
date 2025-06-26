@@ -1,6 +1,7 @@
 package org.esc.serverportsmanager.utils
 
 import io.jsonwebtoken.Claims
+import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.Jwts.SIG
 import io.jsonwebtoken.security.Keys
@@ -101,11 +102,15 @@ class JwtUtil(
     fun getRoleFromToken(token: String): Roles = getClaims(token)?.get("role") as Roles
 
     fun getClaims(token: String): Claims? {
-        val claims = Jwts.parser()
-            .verifyWith(Keys.hmacShaKeyFor(jwtSecret.toByteArray()))
-            .build()
-            .parseSignedClaims(token)
-            .payload
+        val claims = try {
+            Jwts.parser()
+                .verifyWith(Keys.hmacShaKeyFor(jwtSecret.toByteArray()))
+                .build()
+                .parseSignedClaims(token)
+                .payload
+        } catch (_: ExpiredJwtException) {
+            throw JwtAuthenticationException("Jwt token expired")
+        }
 
         return claims
     }

@@ -63,6 +63,6 @@ class GlobalExceptionHandler {
             )
         }
 
-        return ResponseEntity(errorResponse, HttpStatus.UNAUTHORIZED)
+        return ResponseEntity(errorResponse, HttpStatus.LOCKED)
     }
 }
