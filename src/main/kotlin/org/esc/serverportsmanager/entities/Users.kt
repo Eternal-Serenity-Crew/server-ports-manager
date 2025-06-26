@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.esc.serverportsmanager.entities.enums.Roles
+import org.esc.serverportsmanager.io.converters.ConvertableToHttpResponse
 
 @Entity
 @Table(name = "users")
@@ -26,4 +27,4 @@ data class Users(
 
     @Column(nullable = false)
     var role: Roles,
-)
+) : ConvertableToHttpResponse<Users>

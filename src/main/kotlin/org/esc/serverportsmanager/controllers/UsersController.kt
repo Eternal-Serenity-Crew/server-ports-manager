@@ -5,6 +5,7 @@ import org.esc.serverportsmanager.dto.users.CreateUserDto
 import org.esc.serverportsmanager.dto.users.UpdateUserDto
 import org.esc.serverportsmanager.entities.Users
 import org.esc.serverportsmanager.io.BasicSuccessfulResponse
+import org.esc.serverportsmanager.io.converters.toHttpResponse
 import org.esc.serverportsmanager.repositories.UsersRepository
 import org.esc.serverportsmanager.services.UsersService
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -24,12 +25,11 @@ class UsersController(
 ) : CrudController<Users, Long, CreateUserDto, UpdateUserDto> {
 
     @GetMapping("/")
-    override fun getAll(): List<Users> = service.getAll()
+    override fun getAll(): BasicSuccessfulResponse<List<Users>> = service.getAll().toHttpResponse()
 
     @GetMapping("/{id}")
-    override fun getById(@PathVariable id: Long): Users? {
-        println(id::class)
-        return service.getById(id, message = "User with id $id not found.")
+    override fun getById(@PathVariable id: Long): BasicSuccessfulResponse<Users> {
+        return service.getById(id, message = "User with id $id not found.")!!.toHttpResponse()
     }
 
     @GetMapping("/getByEmail/{email}")

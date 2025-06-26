@@ -3,7 +3,6 @@ package org.esc.serverportsmanager.controllers
 import org.esc.serverportsmanager.dto.auth.LoginUserDto
 import org.esc.serverportsmanager.dto.auth.RegisterUserDto
 import org.esc.serverportsmanager.dto.auth.UpdateUserTokensDto
-import org.esc.serverportsmanager.dto.toHttpResponse
 import org.esc.serverportsmanager.services.AuthService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
