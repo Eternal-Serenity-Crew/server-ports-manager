@@ -9,6 +9,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.esc.serverportsmanager.io.converters.ConvertableToHttpResponse
 
 @Entity
 @Table(name = "ports_storage")
@@ -29,4 +30,4 @@ data class PortsStorage(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     var user: Users,
-)
+) : ConvertableToHttpResponse<PortsStorage>

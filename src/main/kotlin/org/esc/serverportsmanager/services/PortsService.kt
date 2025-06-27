@@ -64,7 +64,7 @@ class PortsService(
     }
 
     @Transactional
-    override fun deleteById(id: Long): Any? {
+    override fun deleteById(id: Long): String {
         getById(id, message = "Port with id '$id' wasn't found")!!.let { repository.deleteById(it.id) }
 
         return "Port with id '${id}' was deleted successfully."
